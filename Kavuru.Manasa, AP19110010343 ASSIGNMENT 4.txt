@@ -1,0 +1,422 @@
+                                             Assignment 4
+
+1)Write a c program to reverse a string using stack?
+#include<stdio.h>
+#include<string.h>
+char string[50];
+char stack[50];
+int top;
+void push(char item);
+void pop();
+int main()
+   {
+    int i,n;
+    printf("enter the string");
+    scanf("%s",string);
+    n=strlen(string);
+    for(i=0;i<=n;i++)
+    {
+        push(string[i]);
+    }
+    for(i=0;i<=n;i++)
+    {
+        pop();
+    }
+    
+}
+void push(char item)
+{
+    if(top==49)
+    {
+        printf("Overflow");
+    }
+    else
+    {
+        top++;
+        stack[top]=item;
+    }
+}
+void pop()
+{
+    if(top==-1)
+    {
+        printf("Underflow");
+    }
+    else
+    {
+        top--;
+        printf("%c",stack[top]);
+    }
+}
+Output:
+Enter the string Manasa
+asanaM
+
+
+2)Write a c program for inflix to postfix Conversion using stack?
+#include<stdio.h>
+char stack[20];
+int top=-1;
+void push(char a)
+{
+    stack[++top]=a;
+    
+}
+char pop(){
+    if(top==-1)
+    {
+        return -1;
+    }
+    else{
+        return stack[top--];
+    }
+}
+int priority(char a)
+{
+    if(a=='(')
+    return 0;
+    if(a=='+'||a=='-')
+    return 1;
+    if(a=='*'||a=='/')
+    return 2;
+    
+}
+void main(){
+    char exp[20];
+    char*e,a;
+    printf("enter the expression");
+    scanf("%s",exp);
+    e=exp;
+    while(*e!='\0')
+    {
+        if(isalnum(*e))
+        printf("%c",*e);
+        else if(*e=='(')
+        push(*e);
+        else if(*e==')')
+        {
+            while((a=pop())!='(')
+            printf("%c",a);
+            
+        }
+        else
+        {
+            while(priority(stack[top])>=priority(*e))
+            printf("%c",pop());
+            push(*e);
+        }
+        e++;
+    }
+    while(top!=-1){
+        printf("%c",pop());
+    }
+}
+Output:
+Enter the expression 32+43+98-65
+3243+98+65-
+
+
+3)Write a c program to implement Queue using two stack?
+include <stdio.h>
+#include <stdlib.h>
+struct node
+{
+    int data;
+    struct node *next;
+};
+void push(struct node** top, int data);
+int pop(struct node** top);
+struct queue
+{
+    struct node *stack1;
+    struct node *stack2;
+};
+void enqueue(struct queue *q, int x)
+{
+    push(&q->stack1, x);
+}
+void dequeue(struct queue *q)
+{
+    int x;
+    if (q->stack1 == NULL && q->stack2 == NULL) {
+        printf("queue is empty");
+        return;
+    }
+    if (q->stack2 == NULL) {
+        while (q->stack1 != NULL) {
+        x = pop(&q->stack1);
+        push(&q->stack2, x);
+        }
+    }
+    x = pop(&q->stack2);
+    printf("%d\n", x);
+}
+void push(struct node** top, int data)
+{
+    struct node* newnode = (struct node*) malloc(sizeof(struct node));
+        if (newnode == NULL) {
+            printf("Stack overflow \n");
+            return;
+        }
+    newnode->data = data;
+    newnode->next = (*top);
+    (*top) = newnode;
+}
+int pop(struct node** top)
+{
+    int buff;
+    struct node *t;
+    if (*top == NULL) {
+        printf("Stack underflow \n");
+        return 0;
+    }
+    else {
+        t = *top;
+        buff = t->data;
+        *top = t->next;
+        free(t);
+        return buff;
+    }
+}
+void display(struct node *top1,struct node *top2)
+{
+    while (top1 != NULL) {
+        printf("%d\n", top1->data);
+        top1 = top1->next;
+    }
+    while (top2 != NULL) {
+        printf("%d\n", top2->data);
+        top2 = top2->next;
+    }
+}
+int main()
+{
+    struct queue *q = (struct queue*)malloc(sizeof(struct queue));
+    int f = 0, a;
+    char ch = 'y';
+    q->stack1 = NULL;
+    q->stack2 = NULL;
+    while (ch == 'y'||ch == 'Y') {
+        printf("enter ur choice\n1.add to queue,2.remove from queue,3.display,4.exit\n");
+        scanf("%d", &f);
+        switch(f) {
+            case 1 : printf("enter the element to be added to queue\n");
+                     scanf("%d", &a);
+                     enqueue(q, a);
+                     break;
+            case 2 : dequeue(q);
+                     break;
+            case 3 : display(q->stack1, q->stack2);
+                     break;
+            case 4 : exit(1);
+                     break;
+            default : printf("invalid\n");
+                      break;
+        }
+    }
+}
+Output:
+Enter your choice
+1.Add to queue,2.remove from queue,3.display,4.exit
+1
+Enter the element to be added to queue
+35
+Enter your choice
+1.Add to queue,2.remove from queue,3.display,4.exit
+1
+Enter the element to be added to queue
+55
+Enter your choice
+1.Add to queue,2.remove from queue,3.display,4.exit
+1
+Enter the element to be added to queue
+65
+Enter your choice
+1.Add to queue,2.remove from queue,3.display,4.exit
+3
+35
+55
+65
+Enter your choice
+1.Add to queue,2.remove from queue,3.display,4.exit
+2
+Enter your choice
+1.Add to queue,2.remove from queue,3.display,4.exit
+3
+55
+65
+Enter your choice
+1.Add to queue,2.remove from queue,3.display,4.exit
+4
+
+
+4)Write a c program for inserstion and deletion of BST?
+#include <stdio.h>  
+#include <stdlib.h>  
+#include <stdbool.h>  
+   
+struct node{  
+    int data;  
+    struct node *left;  
+    struct node *right;  
+};  
+   
+struct node *root= NULL;  
+   
+struct node* createNode(int data){  
+
+    struct node *newNode = (struct node*)malloc(sizeof(struct node));  
+ 
+    newNode->data= data;  
+    newNode->left = NULL;  
+    newNode->right = NULL;  
+      
+    return newNode;  
+}  
+   
+void insert(int data) {  
+    
+    struct node *newNode = createNode(data);  
+      
+    if(root == NULL){  
+        root = newNode;  
+        return;  
+      }  
+    else {  
+         
+        struct node *current = root, *parent = NULL;  
+          
+        while(true) {  
+            
+            parent = current;  
+   
+            if(data < current->data) {  
+                current = current->left;  
+                if(current == NULL) {  
+                    parent->left = newNode;  
+                    return;  
+                }  
+            }  
+              
+            else {  
+                current = current->right;  
+                if(current == NULL) {  
+                    parent->right = newNode;  
+                    return;  
+                }  
+            }  
+        }  
+    }  
+}  
+   
+struct node* minNode(struct node *root) {  
+    if (root->left != NULL)  
+        return minNode(root->left);  
+    else   
+        return root;  
+}   
+   
+struct node* deleteNode(struct node *node, int value) 
+{  
+    if(node == NULL){  
+          return NULL;  
+     }  
+    else {  
+        
+        if(value < node->data)
+        {
+            node->left = deleteNode(node->left, value);  
+        } 
+        else if(value > node->data)
+        {
+            node->right = deleteNode(node->right, value);  
+        } 
+        else if(node->left == NULL && node->right == NULL)
+        {
+                node = NULL;  
+         }
+           
+        else if(node->left == NULL)
+        { 
+                node = node->right;  
+            }  
+              
+        else if(node->right == NULL)
+        {  
+                node = node->left;  
+            }  
+            
+        else {  
+                
+                struct node *temp = minNode(node->right);  
+                node->data = temp->data;  
+                node->right = deleteNode(node->right, temp->data);  
+            }  
+        }  
+return node;  
+    }  
+  
+   
+void inorderTraversal(struct node *node) {  
+        
+    if(root == NULL){  
+        printf("Tree is empty\n");  
+          return;  
+     }  
+    else {  
+            
+        if(node->left!= NULL)  
+            inorderTraversal(node->left);  
+        printf("%d ", node->data);  
+        if(node->right!= NULL)  
+          inorderTraversal(node->right);  
+            
+    }        
+}  
+        
+int main()  
+{  
+    
+    insert(5);  
+    insert(3);  
+    insert(7);  
+    insert(6);  
+    insert(1);  
+    insert(9);  
+      
+    printf("Binary search tree after insertion: \n");  
+    inorderTraversal(root);  
+      
+    struct node *deletedNode = NULL;  
+    deletedNode = deleteNode(root, 9);  
+    printf("\nBinary search tree after deleting node 9: \n");  
+    inorderTraversal(root);  
+      
+    deletedNode = deleteNode(root, 3);  
+    printf("\nBinary search tree after deleting node 3: \n");  
+    inorderTraversal(root);  
+      
+    deletedNode = deleteNode(root, 5);  
+    printf("\nBinary search tree after deleting node 5: \n");  
+    inorderTraversal(root);  
+   
+    return 0;  
+}
+Output:
+1 3 5 6 7 9
+Binary search tree after deleting node 9
+1 3 5 6 7 
+Binary search tree after deleting node 3
+1 5 6 7
+Binary search tree after deleting node 5
+1 6 7
+                                                Kavuru Manasa
+                                                AP19110010343
+                                                     CSE-H
+
+
+
+      
+
+
+
